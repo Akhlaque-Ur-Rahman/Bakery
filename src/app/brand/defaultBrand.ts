@@ -39,9 +39,46 @@ export const defaultBrandConfig: BrandConfig = {
   twitterCard: 'summary',
 };
 
+function toSafeString(value: unknown, fallback: string): string {
+  return typeof value === 'string' ? value : fallback;
+}
+
 export function mergeBrandConfig(stored: Partial<BrandConfig> | null | undefined): BrandConfig {
   if (!stored || typeof stored !== 'object') {
     return { ...defaultBrandConfig };
   }
-  return { ...defaultBrandConfig, ...stored };
+
+  const merged: BrandConfig = { ...defaultBrandConfig, ...stored };
+
+  return {
+    ...merged,
+    primaryName: toSafeString(merged.primaryName, defaultBrandConfig.primaryName),
+    secondaryName: toSafeString(merged.secondaryName, defaultBrandConfig.secondaryName),
+    logoDataUrl: typeof merged.logoDataUrl === 'string' || merged.logoDataUrl === null ? merged.logoDataUrl : null,
+    taglineAboutHero: toSafeString(merged.taglineAboutHero, defaultBrandConfig.taglineAboutHero),
+    footerLine1: toSafeString(merged.footerLine1, defaultBrandConfig.footerLine1),
+    footerLine2: toSafeString(merged.footerLine2, defaultBrandConfig.footerLine2),
+    addressSingleLine: toSafeString(merged.addressSingleLine, defaultBrandConfig.addressSingleLine),
+    contactAddressLine2: toSafeString(merged.contactAddressLine2, defaultBrandConfig.contactAddressLine2),
+    contactAddressLine3: toSafeString(merged.contactAddressLine3, defaultBrandConfig.contactAddressLine3),
+    contactCountry: toSafeString(merged.contactCountry, defaultBrandConfig.contactCountry),
+    phoneBlock: toSafeString(merged.phoneBlock, defaultBrandConfig.phoneBlock),
+    emailBlock: toSafeString(merged.emailBlock, defaultBrandConfig.emailBlock),
+    workingHoursBlock: toSafeString(merged.workingHoursBlock, defaultBrandConfig.workingHoursBlock),
+    mapEmbedCaption: toSafeString(merged.mapEmbedCaption, defaultBrandConfig.mapEmbedCaption),
+    aboutParagraph1: toSafeString(merged.aboutParagraph1, defaultBrandConfig.aboutParagraph1),
+    aboutParagraph2: toSafeString(merged.aboutParagraph2, defaultBrandConfig.aboutParagraph2),
+    aboutParagraph3: toSafeString(merged.aboutParagraph3, defaultBrandConfig.aboutParagraph3),
+    aboutMission: toSafeString(merged.aboutMission, defaultBrandConfig.aboutMission),
+    copyrightExtra: toSafeString(merged.copyrightExtra, defaultBrandConfig.copyrightExtra),
+    documentTitle: toSafeString(merged.documentTitle, defaultBrandConfig.documentTitle),
+    metaDescription: toSafeString(merged.metaDescription, defaultBrandConfig.metaDescription),
+    ogTitle: toSafeString(merged.ogTitle, defaultBrandConfig.ogTitle),
+    ogDescription: toSafeString(merged.ogDescription, defaultBrandConfig.ogDescription),
+    ogSiteName: toSafeString(merged.ogSiteName, defaultBrandConfig.ogSiteName),
+    ogImageUrl: toSafeString(merged.ogImageUrl, defaultBrandConfig.ogImageUrl),
+    ogImageAlt: toSafeString(merged.ogImageAlt, defaultBrandConfig.ogImageAlt),
+    ogLocale: toSafeString(merged.ogLocale, defaultBrandConfig.ogLocale),
+    twitterCard: toSafeString(merged.twitterCard, defaultBrandConfig.twitterCard),
+  };
 }

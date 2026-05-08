@@ -16,6 +16,39 @@ function cloneBrand(b: BrandConfig): BrandConfig {
   return { ...b };
 }
 
+function sanitizeBrandConfig(input: BrandConfig): BrandConfig {
+  return {
+    ...input,
+    primaryName: input.primaryName.trim(),
+    secondaryName: input.secondaryName.trim(),
+    taglineAboutHero: input.taglineAboutHero.trim(),
+    footerLine1: input.footerLine1.trim(),
+    footerLine2: input.footerLine2.trim(),
+    addressSingleLine: input.addressSingleLine.trim(),
+    contactAddressLine2: input.contactAddressLine2.trim(),
+    contactAddressLine3: input.contactAddressLine3.trim(),
+    contactCountry: input.contactCountry.trim(),
+    phoneBlock: input.phoneBlock.trim(),
+    emailBlock: input.emailBlock.trim(),
+    workingHoursBlock: input.workingHoursBlock.trim(),
+    mapEmbedCaption: input.mapEmbedCaption.trim(),
+    aboutParagraph1: input.aboutParagraph1.trim(),
+    aboutParagraph2: input.aboutParagraph2.trim(),
+    aboutParagraph3: input.aboutParagraph3.trim(),
+    aboutMission: input.aboutMission.trim(),
+    copyrightExtra: input.copyrightExtra,
+    documentTitle: input.documentTitle.trim(),
+    metaDescription: input.metaDescription.trim(),
+    ogTitle: input.ogTitle.trim(),
+    ogDescription: input.ogDescription.trim(),
+    ogSiteName: input.ogSiteName.trim(),
+    ogImageUrl: input.ogImageUrl.trim(),
+    ogImageAlt: input.ogImageAlt.trim(),
+    ogLocale: input.ogLocale.trim(),
+    twitterCard: input.twitterCard.trim(),
+  };
+}
+
 export const DevBrandSettingsPage: React.FC = () => {
   const { brand, setBrand, resetBrand } = useBrand();
   const [draft, setDraft] = useState(() => cloneBrand(brand));
@@ -55,7 +88,13 @@ export const DevBrandSettingsPage: React.FC = () => {
   };
 
   const handleSave = () => {
-    setBrand(cloneBrand(draft));
+    const next = sanitizeBrandConfig(cloneBrand(draft));
+    if (!next.primaryName && !next.secondaryName) {
+      toast.error('At least one brand name line is required.');
+      return;
+    }
+    setDraft(next);
+    setBrand(next);
     toast.success('Brand settings saved.');
   };
 

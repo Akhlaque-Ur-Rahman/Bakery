@@ -31,10 +31,20 @@ function setLinkRel(rel: string, href: string) {
   el.href = href;
 }
 
+function isSafeImageUrl(url: string): boolean {
+  if (!url) return false;
+  return (
+    url.startsWith('https://') ||
+    url.startsWith('http://') ||
+    url.startsWith('/') ||
+    url.startsWith('data:image/')
+  );
+}
+
 export function resolveOgImage(config: BrandConfig, fallbackImageHref: string): string {
   const url = config.ogImageUrl?.trim();
-  if (url) return url;
-  if (config.logoDataUrl) return config.logoDataUrl;
+  if (url && isSafeImageUrl(url)) return url;
+  if (config.logoDataUrl && isSafeImageUrl(config.logoDataUrl)) return config.logoDataUrl;
   return fallbackImageHref;
 }
 

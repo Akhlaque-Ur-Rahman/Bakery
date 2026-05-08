@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { Search, ShoppingCart, Heart, User, Menu, X, ShieldCheck, Clock3 } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useCart } from '../context/CartContext';
 import { useBrand } from '../context/BrandContext';
 import { products } from '../data/products';
@@ -20,6 +21,12 @@ export const Header: React.FC = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const scrollLockStylesRef = useRef<{
+    bodyOverflow: string;
+    bodyPaddingRight: string;
+    htmlOverflow: string;
+  } | null>(null);
   const cartCount = getCartCount();
 
   const navItems = [
@@ -57,11 +64,104 @@ export const Header: React.FC = () => {
     }
   }, [searchQuery]);
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const body = document.body;
+    const html = document.documentElement;
+
+    if (mobileMenuOpen) {
+      const scrollbarWidth = window.innerWidth - html.clientWidth;
+      scrollLockStylesRef.current = {
+        bodyOverflow: body.style.overflow,
+        bodyPaddingRight: body.style.paddingRight,
+        htmlOverflow: html.style.overflow,
+      };
+
+      body.style.overflow = 'hidden';
+      body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : body.style.paddingRight;
+      html.style.overflow = 'hidden';
+      return;
+    }
+
+    if (scrollLockStylesRef.current) {
+      body.style.overflow = scrollLockStylesRef.current.bodyOverflow;
+      body.style.paddingRight = scrollLockStylesRef.current.bodyPaddingRight;
+      html.style.overflow = scrollLockStylesRef.current.htmlOverflow;
+      scrollLockStylesRef.current = null;
+    }
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    return () => {
+      const body = document.body;
+      const html = document.documentElement;
+      if (scrollLockStylesRef.current) {
+        body.style.overflow = scrollLockStylesRef.current.bodyOverflow;
+        body.style.paddingRight = scrollLockStylesRef.current.bodyPaddingRight;
+        html.style.overflow = scrollLockStylesRef.current.htmlOverflow;
+      }
+    };
+  }, []);
+
   const handleSearchResultClick = (productId: string) => {
     navigate(`/product/${productId}`);
     setSearchQuery('');
     setShowSearchResults(false);
   };
+
+  const overlayTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : { duration: 0.26, ease: [0.22, 1, 0.36, 1] as const };
+
+  const drawerTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : { type: 'spring' as const, stiffness: 250, damping: 32, mass: 0.95 };
+
+  const overlayVariants = {
+    closed: prefersReducedMotion ? { opacity: 1 } : { opacity: 0 },
+    open: { opacity: 1 },
+  };
+
+  const drawerVariants = {
+    closed: prefersReducedMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.96, y: 16, scale: 0.985 },
+    open: { opacity: 1, y: 0, scale: 1 },
+  };
+
+  const listContainerVariants = {
+    closed: {},
+    open: prefersReducedMotion
+      ? {}
+      : {
+          transition: {
+            staggerChildren: 0.045,
+            delayChildren: 0.05,
+          },
+        },
+  };
+
+  const listItemVariants = {
+    closed: prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 18 },
+    open: { opacity: 1, x: 0, transition: { duration: prefersReducedMotion ? 0.01 : 0.24 } },
+  };
+
+  const footerVariants = {
+    closed: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0.01 : 0.26,
+        delay: prefersReducedMotion ? 0 : 0.12,
+      },
+    },
+  };
+
+  const mobileControlButtonClass =
+    'inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-white/95 shadow-sm transition-all duration-300 active:scale-95';
+  const mobileControlIconClass = 'h-6 w-6';
 
   return (
     <>
@@ -178,10 +278,17 @@ export const Header: React.FC = () => {
               </div>
 
               <button
-                className="md:hidden p-2 rounded-lg border border-border/70"
+                className={`md:hidden ${mobileControlButtonClass}`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                <motion.span
+                  className="block"
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.92 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {mobileMenuOpen ? <X className={mobileControlIconClass} /> : <Menu className={mobileControlIconClass} />}
+                </motion.span>
               </button>
             </div>
           </div>
@@ -220,41 +327,124 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
+      </header>
+
+      <AnimatePresence mode="sync">
         {mobileMenuOpen && (
-          <div className="md:hidden border-t bg-white shadow-lg">
-            <nav className="flex flex-col py-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="px-4 py-3 hover:bg-secondary"
-                  onClick={() => setMobileMenuOpen(false)}
+          <div className="md:hidden">
+            <motion.button
+              type="button"
+              aria-label="Close mobile menu overlay"
+              onClick={() => setMobileMenuOpen(false)}
+              variants={overlayVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              transition={overlayTransition}
+              className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[1px] will-change-[opacity]"
+            />
+
+            <motion.aside
+              variants={drawerVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              transition={drawerTransition}
+              className="fixed inset-0 z-50 h-dvh w-screen overflow-hidden bg-[#0f1a18] shadow-2xl will-change-transform"
+            >
+              <div className="flex h-full flex-col">
+                <div className="relative border-b border-white/10 bg-[#162522] px-4 py-3.5">
+                  <div className="pr-14">
+                    <p className="font-playfair text-lg text-[#f3efe8]">{brand.primaryName}</p>
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-[#d4af37]/80">
+                      Signature Menu
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-label="Close mobile menu"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[#223632] text-[#f6f2ea] shadow-sm transition-all duration-300 active:scale-95"
+                  >
+                    <motion.span
+                      className="block"
+                      initial={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92, rotate: -10 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
+                      transition={{ duration: prefersReducedMotion ? 0.01 : 0.2 }}
+                    >
+                      <X className={mobileControlIconClass} />
+                    </motion.span>
+                  </button>
+                </div>
+
+                <motion.nav
+                  className="flex-1 overflow-y-auto px-3 py-4"
+                  variants={listContainerVariants}
+                  initial="closed"
+                  animate="open"
                 >
-                  {item.label}
-                </Link>
-              ))}
-              <div className="border-t mt-2 pt-2">
-                <Link
-                  to="/wishlist"
-                  className="px-4 py-3 hover:bg-secondary flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  <motion.ul className="space-y-1.5" variants={listContainerVariants}>
+                    {navItems.map((item) => {
+                      const isActive = location.pathname === item.to;
+                      return (
+                        <motion.li
+                          key={item.to}
+                          variants={listItemVariants}
+                        >
+                          <motion.div
+                            whileHover={prefersReducedMotion ? undefined : { x: 4 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <Link
+                            to={item.to}
+                            className={`block rounded-xl px-4 py-3.5 text-[15px] transition-all ${
+                              isActive
+                                ? 'bg-[#1f3732] text-[#f6f2ea] shadow-md shadow-black/30 ring-1 ring-[#d4af37]/40'
+                                : 'text-[#e7dfd1] hover:bg-[#182b27] hover:text-[#f6f2ea]'
+                            }`}
+                            >
+                              {item.label}
+                            </Link>
+                          </motion.div>
+                        </motion.li>
+                      );
+                    })}
+                  </motion.ul>
+                </motion.nav>
+
+                <motion.div
+                  className="border-t border-white/10 bg-[#162522] px-3 py-3"
+                  variants={footerVariants}
+                  initial="closed"
+                  animate="open"
                 >
-                  <Heart className="w-5 h-5" />
-                  Wishlist {wishlist.length > 0 && `(${wishlist.length})`}
-                </Link>
-                <Link
-                  to="/cart"
-                  className="px-4 py-3 hover:bg-secondary flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Cart {cartCount > 0 && `(${cartCount})`}
-                </Link>
+                  <div className="grid grid-cols-2 gap-2">
+                    <motion.div whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}>
+                      <Link
+                        to="/wishlist"
+                        className="rounded-xl border border-white/20 bg-[#223632] px-3 py-3 text-sm text-[#e8dfd1] flex items-center justify-center gap-2 hover:border-[#d4af37]/60 hover:bg-[#29423d] transition-all duration-200"
+                      >
+                        <Heart className="w-4 h-4" />
+                        Wishlist {wishlist.length > 0 && `(${wishlist.length})`}
+                      </Link>
+                    </motion.div>
+                    <motion.div whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}>
+                      <Link
+                        to="/cart"
+                        className="rounded-xl border border-[#d4af37]/35 bg-[#35574f] text-[#f6f2ea] px-3 py-3 text-sm flex items-center justify-center gap-2 hover:bg-[#40675e] transition-all duration-200"
+                      >
+                        <ShoppingCart className="w-4 h-4" />
+                        Cart {cartCount > 0 && `(${cartCount})`}
+                      </Link>
+                    </motion.div>
+                  </div>
+                </motion.div>
               </div>
-            </nav>
+            </motion.aside>
           </div>
         )}
-      </header>
+      </AnimatePresence>
 
       {/* Login Modal */}
       {showLoginModal && (

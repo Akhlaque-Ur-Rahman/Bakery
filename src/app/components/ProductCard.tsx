@@ -38,36 +38,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <>
       <motion.div
-        whileHover={{ y: -5 }}
+        whileHover={{ y: -6 }}
         transition={{ duration: 0.2 }}
         className="group relative"
       >
         <Link to={`/product/${product.id}`}>
-          <div className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-            {/* Image */}
+          <div className="bg-white border border-border/70 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
             <div className="relative aspect-square overflow-hidden bg-gray-100">
               <ImageWithFallback
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              
-              {/* Badges */}
+
               <div className="absolute top-2 left-2 flex flex-col gap-1">
                 {product.discount && (
-                  <Badge className="bg-accent text-accent-foreground">
+                  <Badge className="bg-accent text-accent-foreground shadow-sm">
                     {product.discount}% OFF
                   </Badge>
                 )}
                 {product.isNew && (
-                  <Badge className="bg-primary text-primary-foreground">NEW</Badge>
+                  <Badge className="bg-primary text-primary-foreground shadow-sm">NEW</Badge>
                 )}
                 {product.isBestSeller && (
-                  <Badge variant="secondary">BESTSELLER</Badge>
+                  <Badge variant="secondary" className="shadow-sm">BESTSELLER</Badge>
                 )}
               </div>
 
-              {/* Wishlist Button */}
               <button
                 onClick={handleWishlistToggle}
                 className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-accent hover:text-white"
@@ -77,7 +74,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 />
               </button>
 
-              {/* Quick View */}
               <button
                 onClick={(e) => {
                   e.preventDefault();
@@ -97,39 +93,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
             </div>
 
-            {/* Content */}
             <div className="p-4">
-              {/* Rating */}
               <div className="flex items-center gap-1 mb-2">
                 <div className="flex items-center bg-primary text-primary-foreground px-2 py-0.5 rounded text-xs">
                   <Star className="w-3 h-3 mr-1 fill-current" />
                   {product.rating}
                 </div>
-                <span className="text-xs text-muted-foreground">({product.reviews})</span>
+                <span className="text-xs text-muted-foreground">({product.reviews} reviews)</span>
               </div>
 
-              {/* Name */}
               <h3 className="text-sm mb-2 line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
 
-              {/* Price */}
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-lg text-primary">₹{product.price}</span>
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-xl text-primary font-semibold">₹{product.price}</span>
                 {product.originalPrice && (
                   <span className="text-sm text-muted-foreground line-through">
                     ₹{product.originalPrice}
                   </span>
                 )}
               </div>
+              <p className="text-xs text-muted-foreground mb-3">Freshly baked | Fast delivery available</p>
 
-              {/* Add to Cart Button */}
               {product.inStock && (
                 <Button
                   onClick={handleAddToCart}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
                   size="sm"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
-                  Add to Cart
+                  Add to Cart Now
                 </Button>
               )}
             </div>

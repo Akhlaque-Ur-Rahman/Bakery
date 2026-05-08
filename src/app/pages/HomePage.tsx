@@ -10,26 +10,38 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 const heroSlides = [
   {
-    title: 'Premium Bakery Products',
-    subtitle: 'Freshly Baked with Love',
-    description: 'Experience the finest quality bakery items',
-    cta: 'Shop Now',
+    title: 'Fresh Luxury Bakes Delivered Daily',
+    subtitle: 'Bismah Bakery Signature Collection',
+    description: 'Handcrafted with premium ingredients and trusted by thousands of families.',
+    cta: 'Shop Best Sellers',
+    ctaLink: '/category/cookies',
+    secondaryCta: 'View Fresh Collection',
+    secondaryCtaLink: '/category/breads',
+    urgencyBadge: 'Freshly Baked Today',
     bgColor: 'from-primary to-primary/80',
     image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200',
   },
   {
-    title: 'Special Discount Up to 30% OFF',
-    subtitle: "Today's Best Deals",
-    description: 'On selected cookies, cakes & more',
+    title: 'Up to 30% Off on Daily Favorites',
+    subtitle: "Today's Limited-Time Offers",
+    description: 'Save more on customer-loved cookies, cakes, breads and snacks.',
     cta: 'Grab Deals',
+    ctaLink: '/category/cookies',
+    secondaryCta: 'View Fresh Collection',
+    secondaryCtaLink: '/category/snacks',
+    urgencyBadge: 'Offer Ends Tonight',
     bgColor: 'from-accent to-accent/80',
     image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=1200',
   },
   {
-    title: 'Fresh Breads Daily',
-    subtitle: 'Delivered to Your Doorstep',
-    description: 'Order before 8 AM for same-day delivery',
-    cta: 'Order Now',
+    title: 'Order Early, Enjoy Same-Day Delivery',
+    subtitle: 'Fresh Breads & Tea-Time Essentials',
+    description: 'Place your order early and get your favorites baked and delivered the same day.',
+    cta: 'Order Fresh Now',
+    ctaLink: '/category/breads',
+    secondaryCta: 'View Fresh Collection',
+    secondaryCtaLink: '/category/rusk',
+    urgencyBadge: 'Delivery Slots Filling Fast',
     bgColor: 'from-primary to-primary/80',
     image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=1200',
   },
@@ -85,8 +97,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Slider */}
-      <section className="relative h-[500px] overflow-hidden">
+      <section className="relative h-[620px] md:h-[680px] overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -100,16 +111,25 @@ export const HomePage: React.FC = () => {
               <ImageWithFallback
                 src={heroSlides[currentSlide].image}
                 alt={heroSlides[currentSlide].title}
-                className="w-full h-full object-cover opacity-30"
+                className="w-full h-full object-cover opacity-35"
               />
             </div>
-            <div className="relative container mx-auto px-4 h-full flex items-center">
-              <div className="max-w-2xl text-white">
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/45 to-transparent" />
+            <div className="relative container mx-auto h-full px-5 sm:px-6 md:px-8 py-10 flex items-center">
+              <div className="max-w-3xl text-white pt-2 sm:pt-3 md:pt-4 lg:pt-5 mx-auto text-center">
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                  className="inline-flex items-center rounded-full border border-white/35 bg-black/25 backdrop-blur-sm px-4 py-1.5 mb-4 text-xs uppercase tracking-[0.18em] text-white/95"
+                >
+                  {heroSlides[currentSlide].urgencyBadge}
+                </motion.div>
                 <motion.p
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-2xl md:text-3xl mb-2 font-script"
+                  className="text-xl md:text-2xl mb-3 font-script text-accent/95"
                 >
                   {heroSlides[currentSlide].subtitle}
                 </motion.p>
@@ -117,7 +137,7 @@ export const HomePage: React.FC = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-5xl md:text-6xl font-playfair mb-4"
+                  className="text-4xl md:text-6xl font-playfair mb-5 leading-tight"
                 >
                   {heroSlides[currentSlide].title}
                 </motion.h1>
@@ -125,7 +145,7 @@ export const HomePage: React.FC = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-xl mb-8"
+                  className="text-lg md:text-xl mb-8 text-white/90 max-w-2xl"
                 >
                   {heroSlides[currentSlide].description}
                 </motion.p>
@@ -133,54 +153,82 @@ export const HomePage: React.FC = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5 }}
+                  className="flex flex-wrap items-center justify-center gap-3 md:gap-4"
                 >
-                  <Button size="lg" className="bg-white text-primary hover:bg-white/90">
-                    {heroSlides[currentSlide].cta}
+                  <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full px-8 h-12">
+                    <Link to={heroSlides[currentSlide].ctaLink}>{heroSlides[currentSlide].cta}</Link>
                   </Button>
+                  <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-12 border-white/70 text-white bg-white/10 hover:bg-white/20 hover:text-white">
+                    <Link to={heroSlides[currentSlide].secondaryCtaLink}>
+                      {heroSlides[currentSlide].secondaryCta}
+                    </Link>
+                  </Button>
+                </motion.div>
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-7 flex flex-wrap justify-center gap-x-3 gap-y-2 text-xs sm:text-sm md:text-base text-white/95"
+                >
+                  <span className="rounded-full border border-white/25 bg-black/20 px-3 py-1">
+                    4.8/5 Rated by 5,000+ Customers
+                  </span>
+                  <span className="rounded-full border border-white/25 bg-black/20 px-3 py-1">
+                    100% Freshness Guarantee
+                  </span>
+                  <span className="rounded-full border border-white/25 bg-black/20 px-3 py-1">
+                    Secure COD & Online Payments
+                  </span>
                 </motion.div>
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Slider Controls */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+          aria-label="Previous hero slide"
+          className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/85 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+          aria-label="Next hero slide"
+          className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/85 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
 
-        {/* Dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/20 border border-white/20 rounded-full px-3 py-2 backdrop-blur-sm">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
+              aria-label={`Go to hero slide ${index + 1}`}
+              className={`h-2.5 rounded-full transition-all ${
+                index === currentSlide ? 'bg-accent w-10' : 'bg-white/55 w-2.5'
               }`}
             />
           ))}
         </div>
       </section>
 
-      {/* Categories Grid */}
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-playfair mb-8 text-center">Shop by Category</h2>
+      <section className="container mx-auto px-4 py-14">
+        <div className="text-center mb-8">
+          <p className="uppercase tracking-[0.2em] text-xs text-primary/70 mb-2">Explore Luxury Range</p>
+          <h2 className="text-3xl font-playfair">Shop by Category</h2>
+          <p className="text-muted-foreground mt-2">
+            Pick your favorite, add to cart in seconds, and enjoy fresh delivery.
+          </p>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category) => (
             <Link key={category.id} to={`/category/${category.id}`}>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white border rounded-lg p-6 text-center hover:shadow-lg transition-all cursor-pointer"
+                className="bg-white border border-border/70 rounded-xl p-6 text-center hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
               >
                 <div className="text-5xl mb-3">{category.icon}</div>
                 <h3 className="mb-1">{category.name}</h3>
@@ -191,16 +239,17 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Today's Deals */}
-      <section className="bg-secondary py-12">
+      <section className="bg-secondary py-14">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-playfair mb-2">Today's Best Deals</h2>
-              <p className="text-muted-foreground">Limited time offers - Don't miss out!</p>
+              <p className="text-muted-foreground">
+                Limited-time offers ending soon - order now before stocks run out.
+              </p>
             </div>
             <Link to="/category/cookies">
-              <Button variant="outline">View All</Button>
+              <Button variant="outline" className="rounded-full px-6">View All</Button>
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -211,15 +260,16 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Best Sellers */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container mx-auto px-4 py-14">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-playfair mb-2">Best Sellers</h2>
-            <p className="text-muted-foreground">Most loved by our customers</p>
+            <p className="text-muted-foreground">
+              Most loved by our customers for taste, freshness and quality.
+            </p>
           </div>
           <Link to="/category/cookies">
-            <Button variant="outline">View All</Button>
+            <Button variant="outline" className="rounded-full px-6">View All</Button>
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

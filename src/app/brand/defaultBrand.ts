@@ -1,9 +1,9 @@
 import type { BrandConfig } from './types';
 
-export const BRAND_STORAGE_KEY = 'ecommerce-brand-config-v1';
+export const BRAND_STORAGE_KEY = 'ecommerce-brand-config-v2';
 
 export const defaultBrandConfig: BrandConfig = {
-  primaryName: 'Alhamdulillah',
+  primaryName: 'Bismillah',
   secondaryName: 'Bakery',
   logoDataUrl: null,
   taglineAboutHero: 'Freshly Baked with Love Since 1995',
@@ -13,12 +13,12 @@ export const defaultBrandConfig: BrandConfig = {
   contactAddressLine2: 'Phulwari Sharif',
   contactAddressLine3: 'Patna, Bihar - 801505',
   contactCountry: 'India',
-  phoneBlock: '+91 98765 43210\n+91 98765 43211',
+  phoneBlock: '+91 93049 69534',
   emailBlock: 'info@alhamdulillahbakery.com\norders@alhamdulillahbakery.com',
   workingHoursBlock: 'Monday - Saturday: 7:00 AM - 9:00 PM\nSunday: 7:00 AM - 8:00 PM',
   mapEmbedCaption: 'Google Map Embed - Phulwari Sharif, Patna',
   aboutParagraph1:
-    'Established in 1995, Alhamdulillah Bakery has been serving the people of Phulwari Sharif, Patna with premium quality bakery products for over 28 years. What started as a small family business has grown into one of the most trusted bakery brands in the region.',
+    'Established in 1995, Bismillah Bakery has been serving the people of Phulwari Sharif, Patna with premium quality bakery products for over 28 years. What started as a small family business has grown into one of the most trusted bakery brands in the region.',
   aboutParagraph2:
     'Our commitment to quality, freshness, and hygiene has remained unwavering since day one. We use only the finest ingredients and traditional recipes passed down through generations, combined with modern baking techniques to create products that delight our customers.',
   aboutParagraph3:
@@ -26,15 +26,15 @@ export const defaultBrandConfig: BrandConfig = {
   aboutMission:
     'To become the most trusted and loved bakery brand in Bihar by delivering premium quality products that bring joy to every celebration and everyday moments. We strive to maintain our commitment to excellence while expanding our reach to serve more customers across the region.',
   copyrightExtra: ' | Design with love by EDUNEX',
-  documentTitle: 'Alhamdulillah Bakery | Freshly Baked with Love',
+  documentTitle: 'Bismillah Bakery | Freshly Baked with Love',
   metaDescription:
     'Premium bakery products – cookies, cakes, breads, biscuits and more. Freshly baked with love in Patna since 1995. Free delivery on orders above ₹500.',
-  ogTitle: 'Alhamdulillah Bakery | Freshly Baked with Love',
+  ogTitle: 'Bismillah Bakery | Freshly Baked with Love',
   ogDescription:
     'Premium bakery products – cookies, cakes, breads, biscuits and more. Freshly baked with love in Patna since 1995.',
-  ogSiteName: 'Alhamdulillah Bakery',
+  ogSiteName: 'Bismillah Bakery',
   ogImageUrl: '',
-  ogImageAlt: 'Alhamdulillah Bakery',
+  ogImageAlt: 'Bismillah Bakery',
   ogLocale: 'en_IN',
   twitterCard: 'summary',
 };

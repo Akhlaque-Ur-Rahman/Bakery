@@ -3,7 +3,7 @@ import type { BrandConfig } from '../brand/types';
 import { getFullBrandName } from '../brand/types';
 import { BRAND_STORAGE_KEY, defaultBrandConfig, mergeBrandConfig } from '../brand/defaultBrand';
 import { applyBrandDocumentMeta } from '../utils/applyBrandDocumentMeta';
-import defaultLogoUrl from '@/assets/alhamdulillah_bakery_logo-removebg-preview.png';
+import defaultLogoUrl from '@/assets/bismah-bakery-logo.png';
 
 function readStoredBrand(): BrandConfig {
   try {

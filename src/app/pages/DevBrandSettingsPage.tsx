@@ -10,7 +10,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
-import defaultLogoUrl from '@/assets/alhamdulillah_bakery_logo-removebg-preview.png';
+import defaultLogoUrl from '@/assets/bismah-bakery-logo.png';
 
 function cloneBrand(b: BrandConfig): BrandConfig {
   return { ...b };

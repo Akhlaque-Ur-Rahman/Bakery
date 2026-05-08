@@ -39,7 +39,7 @@ export const ProfilePage: React.FC = () => {
       id: 1,
       type: 'Home',
       name: 'Mohammed Ahmed',
-      phone: '+91 98765 43210',
+      phone: '+91 93049 69534',
       address: '123 Main Street, Phulwari Sharif',
       city: 'Patna',
       state: 'Bihar',
@@ -49,7 +49,7 @@ export const ProfilePage: React.FC = () => {
       id: 2,
       type: 'Office',
       name: 'Mohammed Ahmed',
-      phone: '+91 98765 43210',
+      phone: '+91 93049 69534',
       address: '456 Business Park, Boring Road',
       city: 'Patna',
       state: 'Bihar',
@@ -70,7 +70,7 @@ export const ProfilePage: React.FC = () => {
                 <User className="w-10 h-10 text-primary" />
               </div>
               <h3>Mohammed Ahmed</h3>
-              <p className="text-sm text-muted-foreground">+91 98765 43210</p>
+              <p className="text-sm text-muted-foreground">+91 93049 69534</p>
             </div>
 
             <nav className="space-y-1">
@@ -145,7 +145,7 @@ export const ProfilePage: React.FC = () => {
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" defaultValue="+91 98765 43210" />
+                  <Input id="phone" defaultValue="+91 93049 69534" />
                 </div>
                 <div>
                   <Label htmlFor="dob">Date of Birth</Label>

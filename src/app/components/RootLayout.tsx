@@ -4,8 +4,6 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { FloatingCart } from './FloatingCart';
 import { ScrollToTop } from './ScrollToTop';
-import { Toaster } from './ui/sonner';
-
 export const RootLayout: React.FC = () => {
   return (
     <>
@@ -16,7 +14,6 @@ export const RootLayout: React.FC = () => {
       <Footer />
       <FloatingCart />
       <ScrollToTop />
-      <Toaster position="top-right" />
     </>
   );
 };

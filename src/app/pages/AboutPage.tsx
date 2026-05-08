@@ -2,16 +2,19 @@ import React from 'react';
 import { Award, Heart, Shield, Clock } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { useBrand } from '../context/BrandContext';
 
 export const AboutPage: React.FC = () => {
+  const { brand, fullBrandName } = useBrand();
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-playfair mb-4">About Alhamdulillah Bakery</h1>
+          <h1 className="text-4xl md:text-5xl font-playfair mb-4">About {fullBrandName}</h1>
           <p className="text-2xl md:text-3xl max-w-2xl mx-auto opacity-90 font-script">
-            Freshly Baked with Love Since 1995
+            {brand.taglineAboutHero}
           </p>
         </div>
       </section>
@@ -22,30 +25,16 @@ export const AboutPage: React.FC = () => {
           <div>
             <ImageWithFallback
               src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800"
-              alt="Bakery"
+              alt={fullBrandName}
               className="rounded-lg shadow-lg w-full object-cover"
             />
           </div>
           <div>
             <h2 className="text-3xl font-playfair mb-6">Our Story</h2>
             <div className="space-y-4 text-muted-foreground">
-              <p>
-                Established in 1995, Alhamdulillah Bakery has been serving the people of Phulwari
-                Sharif, Patna with premium quality bakery products for over 28 years. What started as
-                a small family business has grown into one of the most trusted bakery brands in the
-                region.
-              </p>
-              <p>
-                Our commitment to quality, freshness, and hygiene has remained unwavering since day
-                one. We use only the finest ingredients and traditional recipes passed down through
-                generations, combined with modern baking techniques to create products that delight
-                our customers.
-              </p>
-              <p>
-                Today, we serve thousands of satisfied customers across Patna through our online
-                platform, making it easier than ever to enjoy our freshly baked products from the
-                comfort of your home.
-              </p>
+              <p>{brand.aboutParagraph1}</p>
+              <p>{brand.aboutParagraph2}</p>
+              <p>{brand.aboutParagraph3}</p>
             </div>
           </div>
         </div>
@@ -103,12 +92,7 @@ export const AboutPage: React.FC = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-playfair mb-6">Our Mission</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            To become the most trusted and loved bakery brand in Bihar by delivering premium quality
-            products that bring joy to every celebration and everyday moments. We strive to maintain
-            our commitment to excellence while expanding our reach to serve more customers across the
-            region.
-          </p>
+          <p className="text-lg text-muted-foreground mb-8">{brand.aboutMission}</p>
         </div>
       </section>
 
@@ -116,9 +100,7 @@ export const AboutPage: React.FC = () => {
       <section className="bg-secondary py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-playfair mb-6 text-center">Visit Us</h2>
-          <p className="text-center text-muted-foreground mb-8">
-            Phulwari Sharif, Patna, Bihar - 801505
-          </p>
+          <p className="text-center text-muted-foreground mb-8">{brand.addressSingleLine}</p>
           <div className="max-w-4xl mx-auto">
             <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
               <p className="text-muted-foreground">Map Location</p>

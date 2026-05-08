@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { useBrand } from '../context/BrandContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -8,6 +9,8 @@ import { Card } from '../components/ui/card';
 import { toast } from 'sonner';
 
 export const ContactPage: React.FC = () => {
+  const { brand, fullBrandName } = useBrand();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success('Thank you! We will get back to you soon.');
@@ -69,10 +72,13 @@ export const ContactPage: React.FC = () => {
                   <div>
                     <h3 className="mb-2">Address</h3>
                     <p className="text-muted-foreground">
-                      Alhamdulillah Bakery<br />
-                      Phulwari Sharif<br />
-                      Patna, Bihar - 801505<br />
-                      India
+                      {fullBrandName}
+                      <br />
+                      {brand.contactAddressLine2}
+                      <br />
+                      {brand.contactAddressLine3}
+                      <br />
+                      {brand.contactCountry}
                     </p>
                   </div>
                 </div>
@@ -85,10 +91,7 @@ export const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="mb-2">Phone</h3>
-                    <p className="text-muted-foreground">
-                      +91 98765 43210<br />
-                      +91 98765 43211
-                    </p>
+                    <p className="text-muted-foreground whitespace-pre-line">{brand.phoneBlock}</p>
                   </div>
                 </div>
               </Card>
@@ -100,10 +103,7 @@ export const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="mb-2">Email</h3>
-                    <p className="text-muted-foreground">
-                      info@alhamdulillahbakery.com<br />
-                      orders@alhamdulillahbakery.com
-                    </p>
+                    <p className="text-muted-foreground whitespace-pre-line">{brand.emailBlock}</p>
                   </div>
                 </div>
               </Card>
@@ -115,10 +115,7 @@ export const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="mb-2">Working Hours</h3>
-                    <p className="text-muted-foreground">
-                      Monday - Saturday: 7:00 AM - 9:00 PM<br />
-                      Sunday: 7:00 AM - 8:00 PM
-                    </p>
+                    <p className="text-muted-foreground whitespace-pre-line">{brand.workingHoursBlock}</p>
                   </div>
                 </div>
               </Card>
@@ -130,7 +127,7 @@ export const ContactPage: React.FC = () => {
         <div className="mt-16">
           <h2 className="text-3xl font-playfair mb-6 text-center">Find Us on Map</h2>
           <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-            <p className="text-muted-foreground">Google Map Embed - Phulwari Sharif, Patna</p>
+            <p className="text-muted-foreground">{brand.mapEmbedCaption}</p>
           </div>
         </div>
       </div>

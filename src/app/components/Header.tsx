@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Search, ShoppingCart, Heart, User, Menu, X } from 'lucide-react';
-import logoImage from '@/assets/alhamdulillah_bakery_logo-removebg-preview.png';
 import { useCart } from '../context/CartContext';
+import { useBrand } from '../context/BrandContext';
 import { products } from '../data/products';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -10,6 +10,7 @@ import { Badge } from './ui/badge';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export const Header: React.FC = () => {
+  const { brand, fullBrandName, logoSrc } = useBrand();
   const { getCartCount, wishlist } = useCart();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,15 +68,17 @@ export const Header: React.FC = () => {
               {/* Logo */}
               <Link to="/" className="flex items-center gap-2 flex-shrink-0">
                 <img
-                  src={logoImage}
-                  alt="Alhamdulillah Bakery"
+                  src={logoSrc}
+                  alt={fullBrandName}
                   className="h-14 w-14 object-contain shrink-0"
                 />
                 <div className="hidden md:block">
                   <h1 className="font-elegant text-2xl text-primary leading-tight tracking-wide">
-                    Alhamdulillah
+                    {brand.primaryName}
                   </h1>
-                  <p className="font-playfair text-xs tracking-widest uppercase text-accent">Bakery</p>
+                  <p className="font-playfair text-xs tracking-widest uppercase text-accent">
+                    {brand.secondaryName}
+                  </p>
                 </div>
               </Link>
 

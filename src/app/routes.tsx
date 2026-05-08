@@ -8,9 +8,14 @@ import { WishlistPage } from './pages/WishlistPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { DevBrandSettingsPage } from './pages/DevBrandSettingsPage';
 import { RootLayout } from './components/RootLayout';
 
 export const router = createBrowserRouter([
+  {
+    path: '/dev/brand-settings',
+    Component: DevBrandSettingsPage,
+  },
   {
     path: '/',
     Component: RootLayout,

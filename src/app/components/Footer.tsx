@@ -3,9 +3,11 @@ import { Link } from 'react-router';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import logoImage from '@/assets/alhamdulillah_bakery_logo-removebg-preview.png';
+import { useBrand } from '../context/BrandContext';
 
 export const Footer: React.FC = () => {
+  const { brand, fullBrandName, logoSrc } = useBrand();
+
   return (
     <footer className="bg-primary text-primary-foreground mt-16">
       <div className="container mx-auto px-4 py-12">
@@ -14,18 +16,19 @@ export const Footer: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img
-                src={logoImage}
-                alt="Alhamdulillah Bakery"
+                src={logoSrc}
+                alt={fullBrandName}
                 className="h-11 w-11 object-contain shrink-0"
               />
               <h3 className="flex flex-wrap items-baseline gap-x-2">
-                <span className="font-elegant text-xl tracking-wide">Alhamdulillah</span>
-                <span className="font-playfair text-sm tracking-widest uppercase opacity-90">Bakery</span>
+                <span className="font-elegant text-xl tracking-wide">{brand.primaryName}</span>
+                <span className="font-playfair text-sm tracking-widest uppercase opacity-90">
+                  {brand.secondaryName}
+                </span>
               </h3>
             </div>
             <p className="text-sm opacity-90 mb-4">
-              Freshly baked with love, delivering premium quality bakery products since 1995.
-              Your trusted bakery in Phulwari Sharif, Patna.
+              {brand.footerLine1} {brand.footerLine2}
             </p>
             <div className="flex gap-3">
               <a
@@ -130,15 +133,15 @@ export const Footer: React.FC = () => {
             <ul className="space-y-3 text-sm opacity-90 mb-6">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                <span>Phulwari Sharif, Patna, Bihar - 801505</span>
+                <span>{brand.addressSingleLine}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 flex-shrink-0" />
-                <span>+91 98765 43210</span>
+              <li className="flex items-start gap-2">
+                <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span className="whitespace-pre-line">{brand.phoneBlock}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 flex-shrink-0" />
-                <span>info@alhamdulillahbakery.com</span>
+              <li className="flex items-start gap-2">
+                <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span className="whitespace-pre-line">{brand.emailBlock}</span>
               </li>
             </ul>
             <div>
@@ -160,7 +163,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-sm opacity-90">
           <p>
-            © {new Date().getFullYear()} Alhamdulillah Bakery. All rights reserved. | Design with love by EDUNEX
+            © {new Date().getFullYear()} {fullBrandName}. All rights reserved.{brand.copyrightExtra}
           </p>
         </div>
       </div>
